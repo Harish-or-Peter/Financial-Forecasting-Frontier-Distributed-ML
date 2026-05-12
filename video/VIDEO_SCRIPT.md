@@ -142,12 +142,15 @@ visible.
 > **F1** balances precision and recall and is robust on imbalanced data. **Precision** drives cost-per-acquisition. **Recall** drives
 > revenue coverage. Accuracy alone would be useless — a constant-no classifier scores 88.5%.
 >
-> GBT wins after tuning at around 0.85 ROC-AUC. **Feature importance** confirms the EDA story: `poutcome`, `month`, `housing`, `balance`,
-> `age`, `contact` are the dominant signals. The model is then **saved as a Spark ML PipelineModel and reloaded** for a sanity-check
-> prediction — that round-trip is exactly what the production scoring service would do.
+> On the executed run, **Random Forest wins ROC-AUC at 0.7356** and **GBT wins F1 at 0.8579** — the picture you'd expect on a small,
+> imbalanced banking dataset where tree ensembles dominate. The script persists Random Forest as the headline model because ROC-AUC is the
+> ranking metric that matters for a lead-scoring call list, but in a scenario with fixed call-centre capacity I would ship GBT instead.
+> **Feature importance** confirms the EDA story: `poutcome`, `month`, `housing`, `balance`, `age`, `contact` are the dominant signals. The
+> model is then **saved as a Spark ML PipelineModel and reloaded** for a sanity-check prediction — that round-trip is exactly what the
+> production scoring service would do.
 >
-> The business impact is concrete: a tuned GBT predicting at the top decile should push effective conversion above 30%, almost tripling
-> the marketing team's ROI per call."
+> The business impact is concrete: a tuned tree model predicting at the top decile should push effective conversion well above the 11.5%
+> baseline, materially improving the marketing team's ROI per call."
 
 **Q&A primer:** "How does Spark ML differ from sklearn?" — *distributed training, lazy evaluation, transformations as a graph, models that
 serialise with their preprocessing.*

@@ -44,7 +44,7 @@ exercising **five distinct distributed primitives** in a single reproducible not
    tuned by 3-fold cross-validation, and evaluated on metrics chosen specifically for an imbalanced binary target.
 5. **Spark Structured Streaming** for real-time transaction monitoring with windowed aggregations and a fraud-flagging rule.
 
-The headline business finding: the bank can materially lift marketing ROI by **scoring leads pre-call** with a tuned GBT model (≈0.85 ROC-AUC),
+The headline business finding: the bank can materially lift marketing ROI by **scoring leads pre-call** with a tuned tree-ensemble model (Random Forest wins ROC-AUC at 0.7356; GBT wins F1 at 0.8579),
 **re-allocating call-centre capacity** to the high-conversion months (Mar/Sep/Oct/Dec), and **re-targeting prior-success clients** on a strict
 contact cadence. The headline engineering finding: the same distributed platform that powers offline lead scoring also serves the real-time
 fraud-signal stream with zero rewrites — exactly the unified-architecture story that justifies the move to Spark in the first place.
@@ -251,7 +251,16 @@ Class balance: 4,000 `no` / 521 `yes` → 11.5% positive.
 - Class weights are deterministic, single-pass, and supported natively by `LogisticRegression`'s `weightCol` parameter.
 - Tree ensembles already handle imbalance well; we leave them unweighted to compare.
 
-**Results.** GBT wins on ROC-AUC after tuning; RF is a strong second. Feature importance consistently surfaces: `poutcome_ohe`, `month_ohe`,
+**Results on the executed run** (held-out test set):
+
+| Model | ROC-AUC | F1 | Precision | Recall |
+|---|---|---|---|---|
+| Logistic Regression (tuned) | 0.7212 | 0.7334 | 0.8405 | 0.6799 |
+| **Random Forest (tuned)** *(persisted as best by ROC-AUC)* | **0.7356** | 0.8472 | 0.8652 | 0.8859 |
+| GBT (tuned) | 0.6960 | **0.8579** | 0.8630 | **0.8871** |
+
+Random Forest wins on ROC-AUC and is therefore the model the script persists; GBT wins on F1 and recall, and would be the right pick under a
+*fixed call-centre capacity* objective. Feature importance from the best tree model consistently surfaces: `poutcome_ohe`, `month_ohe`,
 `housing`, `balance`, `age`, `contact_ohe`.
 
 ### 5.4 Part 4 — Spark Streaming
@@ -330,7 +339,7 @@ way to deploy.
 
 ### 6.4 Feature importance interpretation
 
-Top contributors from the best GBT model:
+Top contributors from the best tree model:
 
 1. **`poutcome_ohe[success]`** — past behaviour is the dominant predictor.
 2. **`month_ohe`** features — seasonality.

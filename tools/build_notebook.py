@@ -1462,7 +1462,7 @@ imp_df = pd.DataFrame({"feature": feat_names[:m], "importance": imp[:m]}) \
 
 plt.figure(figsize=(8,5))
 sns.barplot(data=imp_df, y="feature", x="importance", palette="rocket")
-plt.title("Top-15 Feature Importances — best GBT model")
+plt.title("Top-15 Feature Importances — best tree model")
 plt.tight_layout(); plt.show()
 print(imp_df.to_string(index=False))
 """)
@@ -1775,9 +1775,10 @@ md("""
 md("""
 #### What do you suggest the client to achieve Business Objective?
 
-1. **Deploy the tuned GBT pipeline as a daily lead-scoring batch job.** Score every client overnight; export the top-K to the call centre's
-   queue ranked by predicted probability. This converts the 11.5% blanket conversion rate into a precision-targeted call list — back-of-envelope
-   our model should push effective conversion on the top-decile leads to **>30%**.
+1. **Deploy the tuned tree-ensemble pipeline as a daily lead-scoring batch job.** On the executed run Random Forest wins ROC-AUC (0.7356) and
+   is the model the script persists; GBT wins F1 (0.8579) and would be the right pick under a fixed call-centre capacity. Score every client
+   overnight; export the top-K to the call centre's queue ranked by predicted probability. This converts the 11.5% blanket conversion rate
+   into a precision-targeted call list — back-of-envelope the top-decile leads should convert at multiples of the base rate.
 2. **Re-balance call-centre capacity by month.** May has the highest volume and lowest conversion (Chart 10). Shifting 10–15% of May
    capacity into Mar/Sep/Oct/Dec is essentially free incremental revenue.
 3. **Retain a "warm-list" of `poutcome=success` clients** for re-targeting in the next campaign cycle — Chart 13 shows they convert at
@@ -1805,8 +1806,8 @@ cross-validated hyperparameter tuning, Structured Streaming with windowed aggreg
 all in a single Colab-ready notebook that runs in one click.
 
 The headline business finding is straightforward: the bank can materially lift marketing ROI by **scoring leads pre-call with a tuned
-Gradient-Boosted Trees model**, **re-allocating call-centre capacity to the high-conversion months**, and **re-targeting prior-success
-clients on a strict cadence**. The headline engineering finding is equally clear: the same distributed platform that powers offline lead
+tree-ensemble** (Random Forest is the ROC-AUC winner on this run; GBT wins F1), **re-allocating call-centre capacity to the high-conversion
+months**, and **re-targeting prior-success clients on a strict cadence**. The headline engineering finding is equally clear: the same distributed platform that powers offline lead
 scoring also powers real-time fraud-signal streaming with zero rewrites — exactly the unified-architecture story that justifies the move
 to Spark in the first place.
 

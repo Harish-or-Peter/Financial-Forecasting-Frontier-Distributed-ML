@@ -21,7 +21,7 @@ reproducible Colab-ready notebook.
 | **Dataset** | UCI bank marketing (`bank.csv`, 4,521 rows × 17 cols) |
 | **Target** | `y` — term-deposit subscription (yes/no, ~11.5% positive) |
 | **Stack** | Hadoop (simulated via partitioned Parquet) · Hive (via Spark SQL + Hive support) · Apache Spark · Spark ML · Spark Structured Streaming |
-| **Best model** | Tuned Gradient-Boosted Trees (3-fold CV) |
+| **Best model** | Tuned Random Forest by ROC-AUC; GBT wins on F1 (see results) |
 | **Streaming** | File-source Structured Streaming · 60-second tumbling windows · fraud-flag rule |
 | **Deliverables** | Colab notebook · standalone `.py` scripts · HiveQL scripts · technical document · video script |
 
@@ -171,18 +171,19 @@ python src/streaming/streaming_consumer.py --forever                       # con
 
 ---
 
-## Headline results (held-out test set)
+## Headline results (held-out test set, executed run)
 
 | Model | ROC-AUC | F1 | Precision | Recall |
 |---|---|---|---|---|
-| Logistic Regression (tuned, class-weighted) | ~0.78 | ~0.83 | ~0.85 | ~0.83 |
-| Random Forest (tuned) | ~0.82 | ~0.89 | ~0.88 | ~0.89 |
-| **GBT (tuned)** ★ | **~0.85** | **~0.90** | **~0.89** | **~0.90** |
+| Logistic Regression (tuned, class-weighted) | 0.7212 | 0.7334 | 0.8405 | 0.6799 |
+| **Random Forest (tuned)** ★ *(best ROC-AUC)* | **0.7356** | 0.8472 | 0.8652 | 0.8859 |
+| **GBT (tuned)** ★ *(best F1 / recall)* | 0.6960 | **0.8579** | 0.8630 | **0.8871** |
 
-> Numbers are illustrative — actual values are produced when you run the notebook. The class imbalance (~11.5% positive) makes ROC-AUC and
-> F1 the right headline metrics; accuracy alone would mislead.
+> Class imbalance (~11.5% positive) makes ROC-AUC and F1 the right headline metrics; accuracy alone would mislead. **Random Forest** is the
+> ROC-AUC winner and the one persisted to `models/best_pipeline/`; **GBT** has the better F1 — a different production scenario (e.g. fixed
+> call-centre capacity) would justify shipping GBT instead.
 
-Top feature importances (from the best GBT model) consistently surface: `poutcome`, `month`, `housing`, `balance`, `age`, `contact` —
+Top feature importances (from the best tree model) consistently surface: `poutcome`, `month`, `housing`, `balance`, `age`, `contact` —
 matching the EDA storyline.
 
 ---

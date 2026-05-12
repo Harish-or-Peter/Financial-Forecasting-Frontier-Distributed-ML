@@ -30,3 +30,16 @@ Thumbs.db
 
 # Reference templates (AlmaBetter-provided; not part of this submission)
 refreneces/
+
+# Local toolchains pulled at runtime — too large for git and reproducible from instructions
+.venv311/
+.hadoop/
+
+# Notebook execution byproducts (paths are relative to where the notebook ran)
+notebooks/models/
+notebooks/stream_input/
+notebooks/spark-warehouse/
+notebooks/warehouse/
+notebooks/metastore_db/
+notebooks/derby.log
+run_notebook.log
