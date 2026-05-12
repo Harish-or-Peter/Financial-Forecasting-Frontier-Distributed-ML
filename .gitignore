@@ -28,6 +28,10 @@ _SUCCESS
 .DS_Store
 Thumbs.db
 
+# MS Word transient lock files (created while a .docx is open)
+~$*.docx
+~$*.doc
+
 # Dev audit dump
 tools/_markdown_audit.txt
 
