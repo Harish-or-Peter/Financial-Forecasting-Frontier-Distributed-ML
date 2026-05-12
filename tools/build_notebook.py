@@ -6,6 +6,21 @@ The notebook merges AlmaBetter's standard EDA+ML template with the 5
 distributed-ML parts (Hadoop+Hive, Spark EDA, Spark ML, Spark Streaming,
 Data Parallelism). It is designed to run end-to-end in Google Colab
 (pip-installs PySpark) and also in a local Jupyter with PySpark installed.
+
+NOTE on dev workflow:
+    This builder emits the *AlmaBetter-template* version with explicit Q-A
+    headers under each chart ("Why did you pick the chart? / What is the
+    insight? / What is the business impact?"). The shipped notebook is then
+    post-processed by the cleanup chain to produce the video-ready narrative
+    version that is checked into git:
+
+        1. python tools/build_notebook.py
+        2. python tools/run_notebook.ps1      # optional: execute end-to-end
+        3. python tools/clean_notebook_narrative.py
+        4. python tools/fix_ml_narrative.py
+        5. python tools/fix_summary_phrasing.py
+
+    All cleanup scripts are idempotent.
 """
 
 from __future__ import annotations

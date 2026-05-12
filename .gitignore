@@ -28,6 +28,9 @@ _SUCCESS
 .DS_Store
 Thumbs.db
 
+# Dev audit dump
+tools/_markdown_audit.txt
+
 # Reference templates (AlmaBetter-provided; not part of this submission)
 refreneces/
 
