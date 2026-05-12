@@ -100,7 +100,7 @@ md("""
 """)
 
 md("""
-*GitHub link will be added here once the repository is pushed.* — `https://github.com/<username>/bank-distributed-ml`
+https://github.com/Harish-or-Peter/Financial-Forecasting-Frontier-Distributed-ML
 """)
 
 md("""

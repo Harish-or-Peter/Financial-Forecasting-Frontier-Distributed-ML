@@ -7,7 +7,9 @@ reproducible Colab-ready notebook.
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![PySpark](https://img.shields.io/badge/PySpark-3.5.1-orange.svg)](https://spark.apache.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Harish-or-Peter/Financial-Forecasting-Frontier-Distributed-ML/blob/main/notebooks/Bank_Distributed_ML_Project.ipynb)
+
+> 🔗 **Repository:** https://github.com/Harish-or-Peter/Financial-Forecasting-Frontier-Distributed-ML
 
 ---
 
@@ -128,8 +130,8 @@ bank-distributed-ml/
 
 ```bash
 # 1. Clone
-git clone https://github.com/<you>/bank-distributed-ml.git
-cd bank-distributed-ml
+git clone https://github.com/Harish-or-Peter/Financial-Forecasting-Frontier-Distributed-ML.git
+cd Financial-Forecasting-Frontier-Distributed-ML
 
 # 2. (Optional) Create a virtualenv
 python -m venv .venv && source .venv/bin/activate   # on Windows: .venv\Scripts\Activate.ps1
